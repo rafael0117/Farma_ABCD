@@ -11,7 +11,7 @@ import com.farmacia.interfaces.InventarioFaDAO;
 import com.farmacia.utils.MySqlConexionFa;
 
 public class MySqlInventarioFaDAO implements InventarioFaDAO{
-
+	int r;
 	@Override
 	public int save(InventarioFa bean) {
 		int salida = -1;
@@ -166,5 +166,64 @@ public class MySqlInventarioFaDAO implements InventarioFaDAO{
 	    }
 	    return obj;
 	}
+   
+	@Override
+	public InventarioFa buscar(int id) {
+		InventarioFa in=new InventarioFa();
+		String sql="select*from tb_productos where cod_prod"+id;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		ResultSet rs=null;
+		try {
+			cn=MySqlConexionFa.getConexion();
+			pstm=cn.prepareStatement(sql);
+			rs=pstm.executeQuery();
+			while(rs.next()) {
+				  in.setCodigo(rs.getInt(1));
+		          in.setNom_producto(rs.getString(2));
+		          in.setPrecio(rs.getDouble(3));
+		          in.setFecha_ingreso(rs.getString(4));
+		          in.setFecha_caducidad(rs.getString(5));
+		          in.setReceta(rs.getString(6));
+		          in.setStock(rs.getInt(7));
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return in;
+	}
+
+	@Override
+	public int actualizarStock(int id, int stock) {
+	    String sql = "UPDATE tb_productos SET Stock = ? WHERE cod_prod = ?";
+	    Connection cn = null;
+	    PreparedStatement pstm = null;
+	    int salida=-1;
+	    try {
+	        cn = MySqlConexionFa.getConexion();
+	        pstm = cn.prepareStatement(sql);
+	        pstm.setInt(1, stock);
+	        pstm.setInt(2, id);
+	        salida=pstm.executeUpdate();
+	        
+	        // Aquí podrías configurar propiedades en el objeto inventario si es necesario
+	        
+	    }  catch (Exception e) {
+	        e.printStackTrace();
+	        // Manejo de otras excepciones
+	    } finally {
+	        try {
+	            if (pstm != null) pstm.close();
+	            if (cn != null) cn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            // Manejo de la excepción al cerrar la conexión
+	        }
+	    }
+	    
+	    return salida;
+	}
+
 
 }

@@ -7,64 +7,185 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.farmacia.clases.Cliente;
+import com.farmacia.clases.GenerarSerie;
 import com.farmacia.clases.InventarioFa;
+import com.farmacia.clases.Venta;
+import com.farmacia.dao.MySqlClienteDAO;
 import com.farmacia.dao.MySqlInventarioFaDAO;
+import com.farmacia.dao.MySqlVentaDAO;
 import com.google.gson.Gson;
 
 public class ServletInventarioFa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public ServletInventarioFa() {
-        super();
-    }
+	public ServletInventarioFa() {
+		super();
+	}
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String tipo=request.getParameter("accion");
-		if(tipo.equals("insertar"))
-			insertarEmpleado(request,response);
-		else if(tipo.equals("eliminar"))
-			eliminarEmpleado(request,response);
-		else if(tipo.equals("listar"))
-			listarEmpleado(request,response);
-		else if(tipo.equals("buscarPorCodigo"))
-			buscarPorCodigo(request,response);
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String tipo = request.getParameter("acciones");
+		if (tipo.equals("insertar"))
+			insertarEmpleado(request, response);
+		else if (tipo.equals("eliminar"))
+			eliminarEmpleado(request, response);
+		else if (tipo.equals("listar"))
+			listarEmpleado(request, response);
+		else if (tipo.equals("buscarPorCodigo"))
+			buscarPorCodigo(request, response);
+		else if (tipo.equals("BuscarCliente"))
+			buscarClientePorCodigo(request, response);
+		else if (tipo.equals("ActualizarStock"))
+			actualizarStockDeProducto(request, response);
+		else if (tipo.equals("buscarProducto"))
+			buscarProducto(request, response);
+	}
+
+	private void buscarProducto(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String accion = request.getParameter("accion");
+		switch (accion) {
+
+		}
+	}
+
+	private void actualizarStockDeProducto(HttpServletRequest request, HttpServletResponse response) {
+
+	}
+
+	private void buscarClientePorCodigo(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String accion = request.getParameter("accion");
+		MySqlClienteDAO cldao = new MySqlClienteDAO();
+		MySqlInventarioFaDAO invdao = new MySqlInventarioFaDAO();
+		MySqlVentaDAO vdao = new MySqlVentaDAO();
+		Cliente cli = (Cliente) request.getSession().getAttribute("c"); // Obtener cliente de la sesión
+		InventarioFa in = (InventarioFa) request.getSession().getAttribute("producto"); // Obtener producto de la sesión
+
+		int item = 0;
+		int cod;
+		String descripcion;
+		double precio;
+		int cant;
+		double subtotal;
+		double totalPagar = 0;
+		String numeroserie;
+
+		@SuppressWarnings("unchecked")
+		List<Venta> lista = (List<Venta>) request.getSession().getAttribute("lista");
+
+		if (lista == null) {
+			lista = new ArrayList<>();
+		}
+
+		switch (accion) {
+		case "Buscar Cliente":
+			String dni = request.getParameter("codigocliente");
+			System.out.println("BuscarCliente action triggered. DNI: " + dni);
+			cli = cldao.buscar(dni);
+			if (cli != null) {
+				System.out.println("Cliente encontrado: " + cli.getNombres());
+			} else {
+				System.out.println("Cliente no encontrado.");
+			}
+			break;
+
+		case "Buscar Producto":
+			int id = Integer.parseInt(request.getParameter("codigoproducto"));
+			in = invdao.findByID(id);
+			break;
+
+		case "Agregar":
+			totalPagar = 0.0;
+			item = lista.size() + 1; // Incrementar item basado en el tamaño de la lista
+			cod = Integer.parseInt(request.getParameter("codigoproducto"));
+			descripcion = request.getParameter("nomproducto");
+			precio = Double.parseDouble(request.getParameter("precio"));
+			cant = Integer.parseInt(request.getParameter("cant"));
+			subtotal = precio * cant;
+
+			Venta v = new Venta();
+			v.setItem(item);
+			v.setIdVentas(cod);
+			v.setDescripcion(descripcion);
+			v.setPrecio(precio);
+			v.setCantidad(cant);
+			v.setSubtotal(subtotal);
+			lista.add(v);
+
+			for (int i = 0; i < lista.size(); i++) {
+				totalPagar += lista.get(i).getSubtotal();
+			}
+			break;
+		default:
+			numeroserie=vdao.GenerarSerie();
+			if(numeroserie==null) {
+				numeroserie="00000001";
+				request.setAttribute("serie",numeroserie);
+				
+			}
+			else {
+				int incrementar=Integer.parseInt(numeroserie);
+				GenerarSerie gs=new GenerarSerie();
+				numeroserie =gs.NumeroSerie(incrementar);
+				request.setAttribute("serie", numeroserie);
+			}
+
+System.out.println("Número de serie generado en el servlet: " + numeroserie);
+			request.getRequestDispatcher("emision.jsp").forward(request, response);
+
+		}
+
+		// Almacenar los atributos en la sesión para mantener el estado entre
+		// solicitudes
+		request.getSession().setAttribute("c", cli);
+		request.getSession().setAttribute("producto", in);
+		request.getSession().setAttribute("lista", lista);
+		request.setAttribute("totalpagar", totalPagar);
+		request.setAttribute("c", cli);
+		request.setAttribute("producto", in);
+		request.setAttribute("lista", lista);
+
+		request.getRequestDispatcher("emision.jsp").forward(request, response);
 	}
 
 	private void buscarPorCodigo(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String cod=request.getParameter("codigo");
-		InventarioFa emp=new MySqlInventarioFaDAO().findByID(Integer.parseInt(cod));
-		Gson gson=new Gson();
-		String json=gson.toJson(emp);
+		String cod = request.getParameter("codigo");
+		InventarioFa emp = new MySqlInventarioFaDAO().findByID(Integer.parseInt(cod));
+		Gson gson = new Gson();
+		String json = gson.toJson(emp);
 		response.setContentType("application/json");
-		PrintWriter salida=response.getWriter();
-		salida.println(json);		
+		PrintWriter salida = response.getWriter();
+		salida.println(json);
 	}
 
-	private void listarEmpleado(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<InventarioFa> data=new MySqlInventarioFaDAO().findAll();
+	private void listarEmpleado(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<InventarioFa> data = new MySqlInventarioFaDAO().findAll();
 		request.setAttribute("listaEmpleados", data);
 		request.getRequestDispatcher("/inventario.jsp").forward(request, response);
-		
+
 	}
 
 	private void eliminarEmpleado(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String cod;
 		cod = request.getParameter("codigo");
-		int estado=new MySqlInventarioFaDAO().deleteByCodigo(Integer.parseInt(cod));
-		if(estado==1) 			
-			request.getSession().setAttribute("MENSAJE","Medicamento eliminado correctamente");
-		else 
-			request.getSession().setAttribute("MENSAJE","Error al eliminar Medicamento");
-		
-		
+		int estado = new MySqlInventarioFaDAO().deleteByCodigo(Integer.parseInt(cod));
+		if (estado == 1)
+			request.getSession().setAttribute("MENSAJE", "Medicamento eliminado correctamente");
+		else
+			request.getSession().setAttribute("MENSAJE", "Error al eliminar Medicamento");
+
 		response.sendRedirect("inventario.jsp");
-		
+
 	}
 
 	private void insertarEmpleado(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String cod,medi,pre,fein,feca,re,sto;
+		String cod, medi, pre, fein, feca, re, sto;
 		cod = request.getParameter("codigo");
 		medi = request.getParameter("medicamento");
 		pre = request.getParameter("precio");
@@ -79,23 +200,22 @@ public class ServletInventarioFa extends HttpServlet {
 		em.setFecha_caducidad(feca);
 		em.setReceta(re);
 		em.setStock(Integer.parseInt(sto));
-		if(Integer.parseInt(cod)==0) {
-			int estado=new MySqlInventarioFaDAO().save(em);
-			if(estado==1) 
-				request.getSession().setAttribute("MENSAJE","Medicamento registrado correctamente");
-			else 
-				request.getSession().setAttribute("MENSAJE","Error en el registro");
-		}
-		else {		
+		if (Integer.parseInt(cod) == 0) {
+			int estado = new MySqlInventarioFaDAO().save(em);
+			if (estado == 1)
+				request.getSession().setAttribute("MENSAJE", "Medicamento registrado correctamente");
+			else
+				request.getSession().setAttribute("MENSAJE", "Error en el registro");
+		} else {
 			em.setCodigo(Integer.parseInt(cod));
-			int estado=new MySqlInventarioFaDAO().update(em);	
-			if(estado==1) 
-				request.getSession().setAttribute("MENSAJE","Medicamento actualizado correctamente");
-			else 
-				request.getSession().setAttribute("MENSAJE","Error en la actualización");
+			int estado = new MySqlInventarioFaDAO().update(em);
+			if (estado == 1)
+				request.getSession().setAttribute("MENSAJE", "Medicamento actualizado correctamente");
+			else
+				request.getSession().setAttribute("MENSAJE", "Error en la actualización");
 		}
 		response.sendRedirect("inventario.jsp");
-		
+
 	}
 
 }

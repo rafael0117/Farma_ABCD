@@ -10,4 +10,6 @@ public interface InventarioFaDAO {
 	int deleteByCodigo(int cod);
 	List<InventarioFa> findAll();
 	InventarioFa findByID(int cod);
+	InventarioFa buscar(int id);
+	int actualizarStock(int id,int stock);
 }

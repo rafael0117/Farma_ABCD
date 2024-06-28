@@ -56,6 +56,7 @@
     .offcanvas-body .dropdown-item {
         color: #00414b;
     }
+   
 </style>
 </head>
 <body>
@@ -78,7 +79,7 @@
 	        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">	          
 	          <c:forEach items="${sessionScope.MENUS}" var="row">
 		          <li class="nav-item">
-		            <a class="nav-link text-white mouse" href="${row.ruta}">${row.descripcion}</a>
+		            <a class="nav-link text-white" href="${row.ruta}">${row.descripcion}</a>
 		          </li>
 			  </c:forEach>			         
 		      <li class="nav-item dropdown">
@@ -92,5 +93,8 @@
 	    </div>
 	  </div>
 	</nav>
+
+
+	
 </body>
 </html>

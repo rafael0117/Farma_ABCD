@@ -9,7 +9,29 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <body>
 
-
+<main>
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="row mt-4">
+            <c:forEach items="${sessionScope.MENUS}" var="row">
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-success text-white mb-4" style="height: 100px;width:300px">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6></h6>
+                                    <a class="nav-link fs10" href="${row.ruta}">${row.descripcion}</a>
+                                </div>
+                                <div class="col-sm-3">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

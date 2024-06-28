@@ -7,11 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.farmacia.clases.Cliente;
 import com.farmacia.clases.EmpleadoFa;
+import com.farmacia.clases.InventarioFa;
+import com.farmacia.clases.Venta;
 import com.farmacia.dao.MySqlEmpleadoFaDAO;
+import com.farmacia.dao.MySqlInventarioFaDAO;
 import com.google.gson.Gson;
+import com.farmacia.dao.MySqlClienteDAO;
 
 public class ServletEmpleadoFa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +36,7 @@ public class ServletEmpleadoFa extends HttpServlet {
 			listarEmpleado(request,response);
 		else if(tipo.equals("buscarPorCodigo"))
 			buscarEmpleadoPorCodigo(request,response);
+	
 		}
 
 	private void buscarEmpleadoPorCodigo(HttpServletRequest request, HttpServletResponse response) throws IOException {

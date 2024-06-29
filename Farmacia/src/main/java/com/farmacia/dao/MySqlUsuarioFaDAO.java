@@ -21,7 +21,7 @@ public class MySqlUsuarioFaDAO implements UsuarioFaDAO{
 		ResultSet rs = null;
 		try {
 			cn=MySqlConexionFa.getConexion();
-			String sql="select e.cod_emp,e.nom_emp,e.pat_emp,e.mat_emp,u.idrol\r\n"
+			String sql="select e.cod_emp,e.nom_emp,e.pat_emp,e.mat_emp,u.idrol,e.imagen\r\n"
 					+ "from tb_usuario u join tb_empleado e on e.cod_emp=u.cod_emp\r\n"
 					+ "where u.cod_usu=? and u.password=?;";
 			pstm=cn.prepareStatement(sql);
@@ -35,6 +35,7 @@ public class MySqlUsuarioFaDAO implements UsuarioFaDAO{
 				emp.setPaterno(rs.getString(3));
 				emp.setMaterno(rs.getString(4));
 				emp.setCodigoTipo(rs.getInt(5));
+				emp.setImagen(rs.getString(6));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

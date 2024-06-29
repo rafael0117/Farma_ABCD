@@ -49,6 +49,7 @@ public class ServletUsuarioFa extends HttpServlet {
 			request.getSession().setAttribute("DATOS",  bean.getPaterno()+" "+
 														bean.getMaterno()+" "+
 														bean.getNombre());
+			request.getSession().setAttribute("IMAGEN", bean.getImagen());
 			List<EnlaceFa> lista=new MySqlUsuarioFaDAO().taerMenusDelUsuario(bean.getCodigoTipo());
 			request.getSession().setAttribute("MENUS", lista);
 			response.sendRedirect("farmacia.jsp");

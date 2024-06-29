@@ -4,5 +4,5 @@ import lombok.Data;
 
 public @Data class EmpleadoFa {
 	private int codigo, codigoTipo;
-	private String nombre, paterno, materno;
+	private String nombre, paterno, materno,imagen;
 }

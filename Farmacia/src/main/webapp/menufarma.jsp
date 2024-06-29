@@ -76,6 +76,7 @@
 	      </div>
 	      <div class="offcanvas-body">
 	      	<h3>Bienvenid@, ${sessionScope.DATOS}</h3>
+	      	 <img src="${sessionScope.IMAGEN}" alt="Imagen del usuario" /> <!-- Mostrar la imagen del usuario -->
 	        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">	          
 	          <c:forEach items="${sessionScope.MENUS}" var="row">
 		          <li class="nav-item">

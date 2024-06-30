@@ -1,6 +1,11 @@
 package com.farmacia.interfaces;
 
-public interface VentaDAO {
-	String GenerarSerie();
+import com.farmacia.clases.Venta;
 
+public interface VentaDAO {
+
+	String IdVentas();
+	int guardarVenta(Venta ve);
+
+	int guardarDetalleVenta(Venta venta);
 }

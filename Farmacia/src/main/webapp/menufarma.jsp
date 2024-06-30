@@ -60,7 +60,6 @@
 </style>
 </head>
 <body>
-	
 	<nav class="navbar navbar-dark bg-dark fixed-top">
 	  <div class="container-fluid"> 
 	    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">

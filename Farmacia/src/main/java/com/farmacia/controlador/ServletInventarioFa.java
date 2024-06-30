@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.farmacia.clases.Cliente;
-import com.farmacia.clases.GenerarSerie;
+
 import com.farmacia.clases.InventarioFa;
 import com.farmacia.clases.Venta;
 import com.farmacia.dao.MySqlClienteDAO;
@@ -38,119 +38,110 @@ public class ServletInventarioFa extends HttpServlet {
 		else if (tipo.equals("buscarPorCodigo"))
 			buscarPorCodigo(request, response);
 		else if (tipo.equals("BuscarCliente"))
-			buscarClientePorCodigo(request, response);
-		else if (tipo.equals("ActualizarStock"))
-			actualizarStockDeProducto(request, response);
-		else if (tipo.equals("buscarProducto"))
-			buscarProducto(request, response);
+			buscarClientePorCodigo(request, response);	
 	}
+	
 
-	private void buscarProducto(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String accion = request.getParameter("accion");
-		switch (accion) {
 
-		}
-	}
-
-	private void actualizarStockDeProducto(HttpServletRequest request, HttpServletResponse response) {
-
-	}
-
+	Venta v = new Venta();
 	private void buscarClientePorCodigo(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String accion = request.getParameter("accion");
-		MySqlClienteDAO cldao = new MySqlClienteDAO();
-		MySqlInventarioFaDAO invdao = new MySqlInventarioFaDAO();
-		MySqlVentaDAO vdao = new MySqlVentaDAO();
-		Cliente cli = (Cliente) request.getSession().getAttribute("c"); // Obtener cliente de la sesión
-		InventarioFa in = (InventarioFa) request.getSession().getAttribute("producto"); // Obtener producto de la sesión
+	        throws ServletException, IOException {
+	    String accion = request.getParameter("accion");
+	    MySqlClienteDAO cldao = new MySqlClienteDAO();
+	    MySqlInventarioFaDAO invdao = new MySqlInventarioFaDAO();
+	    Cliente cli = (Cliente) request.getSession().getAttribute("c"); // Obtener cliente de la sesión
+	    InventarioFa in = (InventarioFa) request.getSession().getAttribute("producto"); // Obtener producto de la sesión
 
-		int item = 0;
-		int cod;
-		String descripcion;
-		double precio;
-		int cant;
-		double subtotal;
-		double totalPagar = 0;
-		String numeroserie;
+	    int item = 0;
+	    int cod;
+	    String descripcion;
+	    double precio;
+	    int cant;
+	    double subtotal;
+	    double totalPagar = 0;
 
-		@SuppressWarnings("unchecked")
-		List<Venta> lista = (List<Venta>) request.getSession().getAttribute("lista");
+	    @SuppressWarnings("unchecked")
+	    List<Venta> lista = (List<Venta>) request.getSession().getAttribute("lista");
 
-		if (lista == null) {
-			lista = new ArrayList<>();
-		}
+	    if (lista == null) {
+	        lista = new ArrayList<>();
+	    }
 
-		switch (accion) {
-		case "Buscar Cliente":
-			String dni = request.getParameter("codigocliente");
-			System.out.println("BuscarCliente action triggered. DNI: " + dni);
-			cli = cldao.buscar(dni);
-			if (cli != null) {
-				System.out.println("Cliente encontrado: " + cli.getNombres());
-			} else {
-				System.out.println("Cliente no encontrado.");
-			}
-			break;
+	    switch (accion) {
+	        case "Buscar Cliente":
+	            String dni = request.getParameter("codigocliente");
+	            System.out.println("BuscarCliente action triggered. DNI: " + dni);
+	            cli = cldao.buscar(dni);
+	            if (cli != null) {
+	                System.out.println("Cliente encontrado: " + cli.getNombres());
+	            } else {
+	                System.out.println("Cliente no encontrado.");
+	            }
+	            break;
 
-		case "Buscar Producto":
-			int id = Integer.parseInt(request.getParameter("codigoproducto"));
-			in = invdao.findByID(id);
-			break;
+	        case "Buscar Producto":
+	            int id = Integer.parseInt(request.getParameter("codigoproducto"));
+	            in = invdao.findByID(id);
+	            break;
 
-		case "Agregar":
-			totalPagar = 0.0;
-			item = lista.size() + 1; // Incrementar item basado en el tamaño de la lista
-			cod = Integer.parseInt(request.getParameter("codigoproducto"));
-			descripcion = request.getParameter("nomproducto");
-			precio = Double.parseDouble(request.getParameter("precio"));
-			cant = Integer.parseInt(request.getParameter("cant"));
-			subtotal = precio * cant;
+	        case "Agregar":
+	            totalPagar = 0.0;
+	            item = lista.size() + 1; // Incrementar item basado en el tamaño de la lista
+	            cod = Integer.parseInt(request.getParameter("codigoproducto"));
+	            descripcion = request.getParameter("nomproducto");
+	            precio = Double.parseDouble(request.getParameter("precio"));
+	            cant = Integer.parseInt(request.getParameter("cant"));
+	            subtotal = precio * cant;
 
-			Venta v = new Venta();
-			v.setItem(item);
-			v.setIdVentas(cod);
-			v.setDescripcion(descripcion);
-			v.setPrecio(precio);
-			v.setCantidad(cant);
-			v.setSubtotal(subtotal);
-			lista.add(v);
+	            Venta v = new Venta();
+	            v.setItem(item);
+	            v.setIdProducto(cod);
+	            v.setDescripcion(descripcion);
+	            v.setPrecio(precio);
+	            v.setCantidad(cant);
+	            v.setSubtotal(subtotal);
+	            lista.add(v);
 
-			for (int i = 0; i < lista.size(); i++) {
-				totalPagar += lista.get(i).getSubtotal();
-			}
-			break;
-		default:
-			numeroserie=vdao.GenerarSerie();
-			if(numeroserie==null) {
-				numeroserie="00000001";
-				request.setAttribute("serie",numeroserie);
-				
-			}
-			else {
-				int incrementar=Integer.parseInt(numeroserie);
-				GenerarSerie gs=new GenerarSerie();
-				numeroserie =gs.NumeroSerie(incrementar);
-				request.setAttribute("serie", numeroserie);
-			}
+	            for (Venta venta : lista) {
+	                totalPagar += venta.getSubtotal();
+	            }
+	            break;
 
-System.out.println("Número de serie generado en el servlet: " + numeroserie);
-			request.getRequestDispatcher("emision.jsp").forward(request, response);
+	        case "GenerarVenta":
+	            Venta venta = new Venta();
+	            venta.setIdCliente(cli.getIdCliente());
+	            venta.setIdEmpledo(1);
+	            venta.setFechaVenta("2019-06-14");
+	            venta.setMonto(totalPagar);
+	            venta.setEstado("1");
+	           
 
-		}
+	          
 
-		// Almacenar los atributos en la sesión para mantener el estado entre
-		// solicitudes
-		request.getSession().setAttribute("c", cli);
-		request.getSession().setAttribute("producto", in);
-		request.getSession().setAttribute("lista", lista);
-		request.setAttribute("totalpagar", totalPagar);
-		request.setAttribute("c", cli);
-		request.setAttribute("producto", in);
-		request.setAttribute("lista", lista);
+	            MySqlVentaDAO vdao = new MySqlVentaDAO();
+	            vdao.guardarVenta(venta);
+	            int idv = Integer.parseInt(vdao.IdVentas());
+	            for (Venta vdetalle : lista) {
+	                Venta detalleVenta = new Venta();
+	                detalleVenta.setIdCliente(idv);
+	                detalleVenta.setIdProducto(vdetalle.getIdProducto());
+	                detalleVenta.setCantidad(vdetalle.getCantidad());
+	                detalleVenta.setPrecio(vdetalle.getPrecio());
 
-		request.getRequestDispatcher("emision.jsp").forward(request, response);
+	                vdao.guardarDetalleVenta(detalleVenta);
+	            }
+	            break;
+	    }
+
+	    // Almacenar los atributos en la sesión para mantener el estado entre solicitudes
+	    request.getSession().setAttribute("c", cli);
+	    request.getSession().setAttribute("producto", in);
+	    request.getSession().setAttribute("lista", lista);
+	    request.setAttribute("totalpagar", totalPagar);
+	    request.setAttribute("c", cli);
+	    request.setAttribute("producto", in);
+	    request.setAttribute("lista", lista);
+	    request.getRequestDispatcher("emision.jsp").forward(request, response);
 	}
 
 	private void buscarPorCodigo(HttpServletRequest request, HttpServletResponse response) throws IOException {

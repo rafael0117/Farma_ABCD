@@ -1,4 +1,3 @@
-
 <%
 HttpSession sesion = request.getSession(false);
 if (session == null || session.getAttribute("DATOS") == null) {
@@ -148,10 +147,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 			<div class="col-lg-7">
 				<div class="card">
 					<div class="card-body">
-						<div class="d-flex col-sm-5 ml-auto">
-							<label class="mr-2">Nro.Serie:</label> <input type="text"
-								value="${serie}" name="NroSerie" class="form-control">
-						</div>
+						
 						<table class="table table-hover mt-3">
 							<thead>
 								<tr>
@@ -186,8 +182,8 @@ if (session == null || session.getAttribute("DATOS") == null) {
 					</div>
 					<div class="card-footer d-flex">
 						<div class="col-sm-6">
-							<input type="submit" name="accion" value="Generar Venta"
-								class="btn btn-success"> <input type="submit"
+							<a class="btn btn-success" href="ServletInventarioFa?acciones=BuscarCliente&accion=GenerarVenta">Generar Venta</a>
+							<input type="submit"
 								name="accion" value="Cancelar" class="btn btn-danger">
 						</div>
 						<div class="col-sm-4 ml-auto">

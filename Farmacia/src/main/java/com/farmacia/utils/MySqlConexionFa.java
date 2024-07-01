@@ -11,7 +11,7 @@ public class MySqlConexionFa {
 			String url,user,pass;
 			user="root";
 			pass="mysql";
-			url="jdbc:mysql://localhost:3306/db_farmacia_p?serverTimezone=UTC";
+			url="jdbc:mysql://localhost:3306/BD_Farma_ABCD?serverTimezone=UTC";
 			cn = DriverManager.getConnection(url,user,pass);
 		} catch (Exception e) {
 			e.printStackTrace();

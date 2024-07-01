@@ -182,7 +182,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 					</div>
 					<div class="card-footer d-flex">
 						<div class="col-sm-6">
-							<a class="btn btn-success" href="ServletInventarioFa?acciones=BuscarCliente&accion=GenerarVenta">Generar Venta</a>
+							<a class="btn btn-success" href="ServletInventarioFa?acciones=BuscarCliente&accion=GenerarVenta" onclick="print()">Generar Venta</a>
 							<input type="submit"
 								name="accion" value="Cancelar" class="btn btn-danger">
 						</div>

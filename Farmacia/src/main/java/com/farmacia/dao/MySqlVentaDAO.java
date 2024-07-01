@@ -44,7 +44,7 @@ public class MySqlVentaDAO implements VentaDAO{
 	        cn = MySqlConexionFa.getConexion();
 	        pstm = cn.prepareStatement(sql);
 	        pstm.setInt(1, ve.getIdCliente());
-	        pstm.setInt(2, ve.getIdEmpledo()); // Asegúrate que getIdEmpledo() sea el método correcto para obtener el código de empleado
+	        pstm.setInt(2, ve.getIdEmpledo()); 
 	        pstm.setString(3, ve.getFechaVenta());
 	        pstm.setDouble(4, ve.getMonto());
 	        pstm.setString(5, ve.getEstado());
@@ -69,7 +69,7 @@ public int guardarDetalleVenta(Venta venta) {
     PreparedStatement pstm = null;
     int resultado = 0;
 
-    String sql = "INSERT INTO tb_detalleVentas (IdVentas, cod_prod, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO tb_detalleventas (IdVentas, cod_prod, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
 
     try {
         cn = MySqlConexionFa.getConexion();

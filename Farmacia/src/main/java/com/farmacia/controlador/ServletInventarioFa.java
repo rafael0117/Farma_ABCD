@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.farmacia.clases.Cliente;
@@ -42,6 +43,7 @@ public class ServletInventarioFa extends HttpServlet {
 	}
 	
 
+    MySqlVentaDAO vdao = new MySqlVentaDAO();
 
 	Venta v = new Venta();
 	private void buscarClientePorCodigo(HttpServletRequest request, HttpServletResponse response)
@@ -108,28 +110,43 @@ public class ServletInventarioFa extends HttpServlet {
 	            break;
 
 	        case "GenerarVenta":
+	        	 for (int i = 0; i < lista.size(); i++) {
+	                 int cantidad = lista.get(i).getCantidad();
+	                 int idproducto = lista.get(i).getIdProducto();
+	                 MySqlInventarioFaDAO aO = new MySqlInventarioFaDAO();
+	                 
+	                 // Obtener el inventario del producto
+	                 InventarioFa inv = aO.findByID(idproducto);
+	                 if (inv != null) {
+	                     int nuevoStock = inv.getStock() - cantidad;
+	                     aO.actualizarStock(idproducto, nuevoStock);
+	                 } else {
+	                     System.out.println("Producto no encontrado: " + idproducto);
+	                 }
+	             }
+	        	
 	            Venta venta = new Venta();
-	            venta.setIdCliente(cli.getIdCliente());
-	            venta.setIdEmpledo(1);
+	            venta.setIdCliente(cli.getIdCliente()); // Asume que cli.getIdCliente() devuelve el ID del cliente
+	            venta.setIdEmpledo(1001); // Asume que 2 es el ID del empleado correcto
 	            venta.setFechaVenta("2019-06-14");
-	            venta.setMonto(totalPagar);
+	            venta.setMonto(totalPagar); // Asume que totalPagar es el monto total a registrar
 	            venta.setEstado("1");
-	           
-
-	          
-
-	            MySqlVentaDAO vdao = new MySqlVentaDAO();
 	            vdao.guardarVenta(venta);
+	            // Llamar al método para guardar la venta en la base de datos
+	           
+	            
 	            int idv = Integer.parseInt(vdao.IdVentas());
-	            for (Venta vdetalle : lista) {
-	                Venta detalleVenta = new Venta();
-	                detalleVenta.setIdCliente(idv);
-	                detalleVenta.setIdProducto(vdetalle.getIdProducto());
-	                detalleVenta.setCantidad(vdetalle.getCantidad());
-	                detalleVenta.setPrecio(vdetalle.getPrecio());
-
-	                vdao.guardarDetalleVenta(detalleVenta);
+	            for(int i=0;i<lista.size();i++) {
+	            	v=new Venta();
+	            	v.setIdVentas(idv);
+	            	v.setIdProducto(lista.get(i).getIdProducto());
+	            	v.setCantidad(lista.get(i).getCantidad());
+	            	v.setPrecio(lista.get(i).getPrecio());
+	            	
+	            	vdao.guardarDetalleVenta(v);
 	            }
+	                
+	            
 	            break;
 	    }
 

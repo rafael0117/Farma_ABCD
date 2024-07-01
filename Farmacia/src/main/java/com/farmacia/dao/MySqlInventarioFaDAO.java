@@ -196,7 +196,7 @@ public class MySqlInventarioFaDAO implements InventarioFaDAO{
 
 	@Override
 	public int actualizarStock(int id, int stock) {
-	    String sql = "UPDATE tb_productos SET Stock = ? WHERE cod_prod = ?";
+	    String sql = "UPDATE tb_productos SET stock = ? WHERE cod_prod = ?";
 	    Connection cn = null;
 	    PreparedStatement pstm = null;
 	    int salida=-1;

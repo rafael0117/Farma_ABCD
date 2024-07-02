@@ -19,12 +19,14 @@ public class MySqlEmpleadoFaDAO implements EmpleadoFaDAO{
 		PreparedStatement pstm = null;
 		try {
 			cn=MySqlConexionFa.getConexion();
-			String sql="insert into tb_empleado values(null,?,?,?,?)";
+			String sql="insert into tb_empleado values(null,?,?,?,?,?)";
 			pstm = cn.prepareStatement(sql);
 			pstm.setString(1, bean.getNombre());
 			pstm.setString(2, bean.getPaterno());
 			pstm.setString(3, bean.getMaterno());
-			pstm.setInt(4, bean.getCodigoTipo());
+			pstm.setString(4, bean.getImagen());
+			pstm.setInt(5, bean.getCodigoTipo());
+		
 			salida = pstm.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,7 +110,9 @@ public class MySqlEmpleadoFaDAO implements EmpleadoFaDAO{
 				ef.setNombre(rs.getString(2));
 				ef.setPaterno(rs.getString(3));
 				ef.setMaterno(rs.getString(4));
-				ef.setCodigoTipo(rs.getInt(5));
+				ef.setImagen(rs.getString(5));
+				ef.setCodigoTipo(rs.getInt(6));
+				
 				lista.add(ef);
 			}
 		} catch (Exception e) {

@@ -84,6 +84,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 								<label for="codigo">Datos del Cliente</label>
 								<div class="row">
 									<div class="col-sm-3">
+									<label for="codigo">Dni del Cliente</label>
 										<input type="text" id="codigocliente" name="codigocliente"
 											value="${c.getDni()}" class="form-control"
 											placeholder="Código">
@@ -93,6 +94,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 											class="btn btn-outline-info w-100">
 									</div>
 									<div class="col-sm-6">
+									<label for="nombre">Nombres</label>
 										<input type="text" class="form-control"
 											value="${c.getNombres()}" placeholder="Nombre de Cliente">
 									</div>
@@ -100,8 +102,9 @@ if (session == null || session.getAttribute("DATOS") == null) {
 							</div>
 							<div class="form-group">
 								<label for="codigoProducto">Datos del Producto</label>
-								<div class="row">
+								<div class="row justify-content-center">
 									<div class="col-sm-3">
+									<label for="codigo">Código Producto</label>
 										<input type="text" id="codigoproducto" name="codigoproducto"
 											value="${producto.getCodigo()}" class="form-control"
 											placeholder="Código">
@@ -111,6 +114,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 											class="btn btn-outline-info w-100">
 									</div>
 									<div class="col-sm-6">
+									<label for="producto">Producto</label>
 										<input type="text" value="${producto.getNom_producto()}"
 											name="nomproducto" class="form-control"
 											placeholder="Nombre de Producto">
@@ -120,14 +124,17 @@ if (session == null || session.getAttribute("DATOS") == null) {
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-4">
+									<label for="precio">Precio</label>
 										<input type="text" name="precio" class="form-control"
 											value="${producto.getPrecio()}" placeholder="Precio">
 									</div>
 									<div class="col-sm-3">
+									<label for="cantidad">Cantidad</label>
 										<input type="number" name="cant" class="form-control"
 											value="1" placeholder="Cantidad">
 									</div>
 									<div class="col-sm-3">
+									<label for="stock">Stock</label>
 										<input type="text" name="stock" class="form-control"
 											value="${producto.getStock()}" placeholder="Stock">
 									</div>

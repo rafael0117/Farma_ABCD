@@ -74,7 +74,7 @@ public class MySqlHistorialVentaDAO implements HistorialVentaDAO{
 	    PreparedStatement pstm = null;
 	    try {
 	        cn=MySqlConexionFa.getConexion();
-	        String sql="delete from tb_cdp where cod_venta=?";
+	        String sql="delete from tb_detalleVentas where cod_detalle=?";
 	        pstm = cn.prepareStatement(sql);
 	        pstm.setInt(1, cod);
 	        salida = pstm.executeUpdate();

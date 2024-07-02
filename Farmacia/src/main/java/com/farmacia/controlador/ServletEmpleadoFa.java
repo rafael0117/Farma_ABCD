@@ -69,17 +69,19 @@ public class ServletEmpleadoFa extends HttpServlet {
 	}
 
 	private void insertarEmpleado(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String cod, nom, pat, mat, codTipo;
+		String cod, nom, pat, mat, codTipo ,foto;
 		cod = request.getParameter("codigo");
 		nom = request.getParameter("nombre");
 		pat = request.getParameter("paterno");
 		mat = request.getParameter("materno");
-		codTipo = request.getParameter("tipo");
+		foto = request.getParameter("fotoemp");
+		codTipo = request.getParameter("tipo");		
 		EmpleadoFa emp = new EmpleadoFa();
 		emp.setNombre(nom);
 		emp.setPaterno(pat);
 		emp.setMaterno(mat);
 		emp.setCodigoTipo(Integer.parseInt(codTipo));
+		emp.setImagen("./img/"+foto);
 		if(Integer.parseInt(cod)==0) {
 			int estado=new MySqlEmpleadoFaDAO().save(emp);
 			if(estado==1) 

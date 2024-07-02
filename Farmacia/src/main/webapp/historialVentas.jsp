@@ -43,16 +43,17 @@
 			<table id="tableMedicamentos" class="table table-striped" style="width:100%">
 		        <thead>
 		            <tr>
-		                <th>Código Venta</th>
-		                <th>Nombre</th>
-		                <th>Fecha Emision</th>
+		                <th>Código</th>
+		                <th>Fecha Venta</th>
 		                <th>Monto</th>
-		                <th>Correo</th>
+		                <th>Vendedor</th>
+		                <th>Producto</th>
+		                <th>Cantidad</th>
 		                <th></th>
 		            </tr>
 		        </thead>
 		        <tbody>
-		         
+	
 		        </tbody>
 		    </table>
 			<div class="modal fade" id="modalMedicamentos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -143,13 +144,14 @@
 		
 		
 		function leerJSON(){
-			$.get("ServletHistorialVentaJSON",function(response){
+			$.get("ServletEmision",function(response){
 				$.each(response,function(index,item){
-					$("#tableMedicamentos tbody").append(`<tr><td>\${item.codigo}</td>
-														   <td>\${item.nombre}</td>
-														   <td>\${item.fecha_emision}</td>
+					$("#tableMedicamentos tbody").append(`<tr><td>\${item.cod_detalle}</td>
+														   <td>\${item.fecha_venta}</td>
 														   <td>\${item.monto}</td>
-														   <td>\${item.correo}</td>
+														   <td>\${item.nom_emp}</td>
+														   <td>\${item.nom_prod}</td>
+														   <td>\${item.cantidad}</td>
 														   <td>
 															<button type="button" class="btn btn-danger btn-eliminar">Eliminar</button>
 										                	</td>

@@ -6,9 +6,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
+import com.farmacia.clases.DetalleVenta;
 import com.farmacia.clases.Emision;
+import com.farmacia.clases.EmpleadoFa;
 import com.farmacia.dao.MySqlEmisionDAO;
+import com.farmacia.dao.MySqlEmpleadoFaDAO;
+import com.google.gson.Gson;
 
 
 public class ServletEmision extends HttpServlet {
@@ -21,24 +27,12 @@ public class ServletEmision extends HttpServlet {
 
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String cod,fecEmi, nom, tot,corre;
-		cod = request.getParameter("codigo");
-		fecEmi = request.getParameter("fechaemi");
-		nom = request.getParameter("nombre");
-		tot = request.getParameter("total");
-		corre = request.getParameter("correo");
-		Emision emp = new Emision();
-		emp.setFecha_emi_cdp(fecEmi);
-		emp.setNom_compra(nom);
-		emp.setValor_pago(Double.parseDouble(tot));
-		emp.setCorreo_comprador(corre);
-		if(Integer.parseInt(cod)==0) {
-			int estado=new MySqlEmisionDAO().save(emp);
-			if(estado==1) 
-				request.getSession().setAttribute("MENSAJE","CDP registrado correctamente");
-			else 
-				request.getSession().setAttribute("MENSAJE","Error en el registro");
-		}
-		response.sendRedirect("emision.jsp");	}
+		List<DetalleVenta> lista=new MySqlEmisionDAO().findAll();
+		Gson gson=new Gson();
+		String json=gson.toJson(lista);
+		response.setContentType("application/json");
+		PrintWriter salida=response.getWriter();
+		salida.println(json);
+	}
 
 }

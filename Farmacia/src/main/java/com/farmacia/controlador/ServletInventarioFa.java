@@ -46,7 +46,6 @@ public class ServletInventarioFa extends HttpServlet {
     MySqlVentaDAO vdao = new MySqlVentaDAO();
 
 	Venta v = new Venta();
-
 	private void buscarClientePorCodigo(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
 	    String accion = request.getParameter("accion");
@@ -54,14 +53,6 @@ public class ServletInventarioFa extends HttpServlet {
 	    MySqlInventarioFaDAO invdao = new MySqlInventarioFaDAO();
 	    Cliente cli = (Cliente) request.getSession().getAttribute("c");
 	    InventarioFa in = (InventarioFa) request.getSession().getAttribute("producto");
-
-	    int item = 0;
-	    int cod;
-	    String descripcion;
-	    double precio;
-	    int cant;
-	    double subtotal;
-	    double totalPagar = 0;
 
 	    @SuppressWarnings("unchecked")
 	    List<Venta> lista = (List<Venta>) request.getSession().getAttribute("lista");
@@ -88,13 +79,12 @@ public class ServletInventarioFa extends HttpServlet {
 	            break;
 
 	        case "Agregar":
-	            totalPagar = 0.0;
-	            item = lista.size() + 1;
-	            cod = Integer.parseInt(request.getParameter("codigoproducto"));
-	            descripcion = request.getParameter("nomproducto");
-	            precio = Double.parseDouble(request.getParameter("precio"));
-	            cant = Integer.parseInt(request.getParameter("cant"));
-	            subtotal = precio * cant;
+	            int item = lista.size() + 1;
+	            int cod = Integer.parseInt(request.getParameter("codigoproducto"));
+	            String descripcion = request.getParameter("nomproducto");
+	            double precio = Double.parseDouble(request.getParameter("precio"));
+	            int cant = Integer.parseInt(request.getParameter("cant"));
+	            double subtotal = precio * cant;
 
 	            Venta v = new Venta();
 	            v.setItem(item);
@@ -105,27 +95,26 @@ public class ServletInventarioFa extends HttpServlet {
 	            v.setSubtotal(subtotal);
 	            lista.add(v);
 
-	          
-
 	            request.getSession().setAttribute("lista", lista);
-	   
 	            break;
 
 	        case "GenerarVenta":
-	            for (int i = 0; i < lista.size(); i++) {
-	                InventarioFa inv = new InventarioFa();
-	                int cantidad = lista.get(i).getCantidad();
-	                int idproducto = lista.get(i).getIdProducto();
-	                MySqlInventarioFaDAO aO = new MySqlInventarioFaDAO();
-	                inv = aO.findByID(idproducto);
-	                int sac = inv.getStock() - cantidad;
-	                aO.actualizarStock(idproducto, sac);
-	                for (Venta venta : lista) {
-		                totalPagar += venta.getSubtotal();
-		            }
-	                request.setAttribute("totalpagar", totalPagar);
+	            // Actualizar el stock en la base de datos
+	            for (Venta venta : lista) {
+	                int cantidad = venta.getCantidad();
+	                int idproducto = venta.getIdProducto();
+	                InventarioFa inv = invdao.findByID(idproducto);
+	                int nuevoStock = inv.getStock() - cantidad;
+	                invdao.actualizarStock(idproducto, nuevoStock);
 	            }
 
+	            // Calcular el total a pagar
+	            double totalPagar = 0.0;
+	            for (Venta venta : lista) {
+	                totalPagar += venta.getSubtotal();
+	            }
+
+	            // Guardar la venta en la base de datos
 	            Venta venta = new Venta();
 	            venta.setIdCliente(cli.getIdCliente());
 	            venta.setIdEmpledo(1001); // Asumiendo que 1001 es el ID del empleado correcto
@@ -134,18 +123,45 @@ public class ServletInventarioFa extends HttpServlet {
 	            venta.setEstado("1");
 	            vdao.guardarVenta(venta);
 
-	            int idv = Integer.parseInt(vdao.IdVentas());
-	            for (int i = 0; i < lista.size(); i++) {
-	                v = new Venta();
-	                v.setIdVentas(idv);
-	                v.setIdProducto(lista.get(i).getIdProducto());
-	                v.setCantidad(lista.get(i).getCantidad());
-	                v.setPrecio(lista.get(i).getPrecio());
-	                vdao.guardarDetalleVenta(v);
+	            int idVenta = Integer.parseInt(vdao.IdVentas());
+	            for (Venta itemVenta : lista) {
+	                Venta detalleVenta = new Venta();
+	                detalleVenta.setIdVentas(idVenta);
+	                detalleVenta.setIdProducto(itemVenta.getIdProducto());
+	                detalleVenta.setCantidad(itemVenta.getCantidad());
+	                detalleVenta.setPrecio(itemVenta.getPrecio());
+	                vdao.guardarDetalleVenta(detalleVenta);
 	            }
-	            break;
+
+	            // Limpiar la lista y los atributos de sesión después de generar la venta
+	            lista.clear();
+	            cli = null;
+	            in = null;
+	            totalPagar = 0.0;
+
+	            request.getSession().removeAttribute("c");
+	            request.getSession().removeAttribute("producto");
+	            request.getSession().removeAttribute("lista");
+
+	            try {
+	                Thread.sleep(3000); // 4000 milisegundos = 4 segundos
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	            // Redireccionar a emision.jsp con el parámetro ventaGenerada=true
+	       
+	            request.setAttribute("totalpagar", totalPagar); // Asegurar que totalpagar esté limpio
+	            request.getRequestDispatcher("emision.jsp").forward(request, response);
+	            return;
 	    }
 
+	    // Calcular el total a pagar después del switch
+	    double totalPagar = 0.0;
+	    for (Venta venta : lista) {
+	        totalPagar += venta.getSubtotal();
+	    }
+
+	    // Establecer los atributos de sesión y de solicitud para la página emision.jsp
 	    request.getSession().setAttribute("c", cli);
 	    request.getSession().setAttribute("producto", in);
 	    request.getSession().setAttribute("lista", lista);

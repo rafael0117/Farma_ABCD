@@ -66,7 +66,7 @@
 	      <span class="navbar-toggler-icon"></span>
 	    </button>	
 	    <form class="d-flex" action="ServletUsuarioFa?accion=CERRARSESION" method="post">
-	        <button class="btn btn-outline-danger" type="submit">Cerrar Sesión</button>
+	        <button class="btn btn-outline-danger desaparecer" type="submit">Cerrar Sesión</button>
 	    </form>
 	    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
 	      <div class="offcanvas-header">

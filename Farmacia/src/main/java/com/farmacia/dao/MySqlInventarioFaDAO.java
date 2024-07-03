@@ -167,32 +167,7 @@ public class MySqlInventarioFaDAO implements InventarioFaDAO{
 	    return obj;
 	}
    
-	@Override
-	public InventarioFa buscar(int id) {
-		InventarioFa in=new InventarioFa();
-		String sql="select*from tb_productos where cod_prod"+id;
-		Connection cn=null;
-		PreparedStatement pstm=null;
-		ResultSet rs=null;
-		try {
-			cn=MySqlConexionFa.getConexion();
-			pstm=cn.prepareStatement(sql);
-			rs=pstm.executeQuery();
-			while(rs.next()) {
-				  in.setCodigo(rs.getInt(1));
-		          in.setNom_producto(rs.getString(2));
-		          in.setPrecio(rs.getDouble(3));
-		          in.setFecha_ingreso(rs.getString(4));
-		          in.setFecha_caducidad(rs.getString(5));
-		          in.setReceta(rs.getString(6));
-		          in.setStock(rs.getInt(7));
-				
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return in;
-	}
+
 
 	@Override
 	public int actualizarStock(int id, int stock) {
@@ -224,6 +199,9 @@ public class MySqlInventarioFaDAO implements InventarioFaDAO{
 	    
 	    return salida;
 	}
+
+
+
 
 
 }

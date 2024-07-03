@@ -66,7 +66,7 @@
 	      <span class="navbar-toggler-icon"></span>
 	    </button>	
 	    <form class="d-flex" action="ServletUsuarioFa?accion=CERRARSESION" method="post">
-	        <button class="btn btn-outline-danger" type="submit">Cerrar Sesión</button>
+	        <button class="btn btn-danger" type="submit">Cerrar Sesión</button>
 	    </form>
 	    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
 	      <div class="offcanvas-header">
@@ -75,8 +75,8 @@
 	      </div>
 	      <div class="offcanvas-body">
 	      	<h3>Bienvenid@, ${sessionScope.DATOS}</h3>
-	      	 <img src="${sessionScope.IMAGEN}" alt="Imagen del usuario" /> <!-- Mostrar la imagen del usuario -->
-	        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">	          
+	      	 <img class="rounded-5 align-items-center" src="${sessionScope.IMAGEN}" alt="Imagen del usuario" />
+	        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 	          <c:forEach items="${sessionScope.MENUS}" var="row">
 		          <li class="nav-item">
 		            <a class="nav-link text-white" href="${row.ruta}">${row.descripcion}</a>

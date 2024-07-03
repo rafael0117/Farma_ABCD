@@ -37,7 +37,7 @@
 	</style>
 </head>
 <body>
-	<div class="container">
+	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
 			<h3 class="text-center mt-3">Historial Venta</h3>
 
 			<table id="tableMedicamentos" class="table table-striped" style="width:100%">

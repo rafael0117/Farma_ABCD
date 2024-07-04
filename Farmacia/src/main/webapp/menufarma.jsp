@@ -86,8 +86,8 @@ body::after {
 	<div class="full_container">
 		<div class="inner_container">
 			<!-- Sidebar  -->
-			<nav id="sidebar" class="ps active ps--active-y">
-				<div class="sidebar_blog_1">
+			<nav id="sidebar" class="ps active ps--active-y desaparecer">
+				<div class="sidebar_blog_1 desaparecer">
 					<div class="sidebar-header">
 						<div class="logo_section">
 							<a href="./farmacia.jsp"><img class="logo_icon img-responsive"
@@ -109,7 +109,7 @@ body::after {
 						</div>
 					</div>
 				</div>
-				<div class="sidebar_blog_2">
+				<div class="sidebar_blog_2 desaparecer">
 					<h4>General</h4>
 					<ul class="list-unstyled components">
 						<li class="active"><a href="./farmacia.jsp"><i
@@ -133,7 +133,7 @@ body::after {
 			<!-- right content -->
 			<div id="content">
 				<!-- topbar -->
-				<div class="topbar">
+				<div class="topbar desaparecer">
 					<nav class="navbar navbar-expand-lg navbar-light">
 						<div class="full">
 							<button type="button" id="sidebarCollapse" class="sidebar_toggle">

@@ -213,7 +213,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 								onclick="imprimirYMostrarMensaje()">Generar Venta</a>
 								
 							 <input
-								type="submit" name="${lista}"  value="Cancelar" class="btn btn-danger">
+								type="submit" name="${lista}"  value="Cancelar" class="btn btn-danger desaparecer">
 						</div>
 						<div class="col-sm-4 ml-auto d-flex mr-5 desaparecer">
 							<div class="form-inline ml-auto d-flex mr-5">

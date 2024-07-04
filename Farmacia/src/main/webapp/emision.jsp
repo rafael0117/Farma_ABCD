@@ -56,8 +56,12 @@ if (session == null || session.getAttribute("DATOS") == null) {
 	box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
 }
 
+.contenedor{
+	margin-top: 2em;
+}
+
 .container {
-	margin-top: -150px;
+	margin-top: 5em;
 }
 
 .codigos {
@@ -88,9 +92,9 @@ if (session == null || session.getAttribute("DATOS") == null) {
 </head>
 <body>
 
-	<div class="container-fluid">
+	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
 		<h2 class="text-center mt-5">Emisión de CDP</h2>
-		<div class="contenedor d-flex">
+		<div class="contenedor">
 			<div class="col-lg-5 desaparecer">
 				<form action="ServletInventarioFa?acciones=BuscarCliente"
 					method="POST">
@@ -104,9 +108,9 @@ if (session == null || session.getAttribute("DATOS") == null) {
 											id="codigocliente" name="codigocliente" value="${c.getDni()}"
 											class="form-control" placeholder="Código">
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-3" style="margin-top:24px">
 										<input type="submit" name="accion" value="Buscar Cliente"
-											class="btn btn-outline-info w-100">
+											class="btn btn-warning w-100">
 									</div>
 									<div class="col-sm-6">
 										<label for="nombre">Nombres</label> <input type="text"
@@ -125,7 +129,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 									</div>
 									<div class="col-sm-3">
 										<input type="submit" name="accion" value="Buscar Producto"
-											class="btn btn-outline-info w-100">
+											class="btn btn-warning w-100">
 									</div>
 									<div class="col-sm-6">
 										<label for="producto">Producto</label> <input type="text"
@@ -136,7 +140,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 							</div>
 							<div class="form-group">
 								<div class="row inline-block">
-									<div class="col-sm-4">
+									<div class="col-sm-3">
 										<label for="precio">Precio</label> <input type="text"
 											name="precio" class="form-control"
 											value="${producto.getPrecio()}" placeholder="Precio">
@@ -151,17 +155,16 @@ if (session == null || session.getAttribute("DATOS") == null) {
 											name="stock" class="form-control"
 											value="${producto.getStock()}" placeholder="Stock">
 									</div>
-									<div class="col-sm-2">
+									<div class="col-sm-3" style="margin-top:25px">
 										<input type="submit" name="accion" value="Agregar"
-											class="btn btn-outline-info w-100 mt-10">
+											class="btn btn-warning w-100 mt-10">
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-success btn-editar mt-3"
-						data-bs-toggle="modal" data-bs-target="#modalEmpleado">Pagar</button>
 				</form>
+				<br>
 			</div>
 
 			<div class="col-lg-7">
@@ -205,7 +208,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 					</div>
 					<div class="card-footer d-flex ">
 						<div class="col-sm-6">
-							<a class="btn btn-success desaparecer"
+							<a class="btn btn-primary desaparecer"
 								href="ServletInventarioFa?acciones=BuscarCliente&accion=GenerarVenta"
 								onclick="imprimirYMostrarMensaje()">Generar Venta</a>
 								

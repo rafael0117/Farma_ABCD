@@ -14,14 +14,13 @@
         <div class="row mt-4">
             <c:forEach items="${sessionScope.MENUS}" var="row">
                 <div class="col-xl-4 col-md-6">
-                    <div class="card bg-success text-white mb-4" style="height: 100px;width:300px">
-                        <div class="card-body">
+                    <div class="card rounded-4 bg-success bg-gradient text-white mb-4" style="height: 100px;width:200px">
+                        <div class="card-body d-flex align-items-center justify-content-center">
                             <div class="row">
-                                <div class="col-sm-9">
-                                    <h6></h6>
-                                    <a class="nav-link fs10" href="${row.ruta}">${row.descripcion}</a>
+                                <div class="col-sm-10 d-flex align-items-center justify-content-center">
+                                    <a class="nav-link text-center" href="${row.ruta}">${row.descripcion}</a>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-10">
                                     <i class="fas fa-user fa-2x"></i>
                                 </div>
                             </div>
@@ -32,6 +31,7 @@
         </div>
     </div>
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

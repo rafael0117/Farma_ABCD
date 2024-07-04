@@ -92,7 +92,7 @@ if (session == null || session.getAttribute("DATOS") == null) {
 </head>
 <body>
 
-	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
+	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;margin-top:100px;">
 		<h2 class="text-center mt-5">Emisión de CDP</h2>
 		<div class="contenedor">
 			<div class="col-lg-5 desaparecer">

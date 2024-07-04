@@ -48,7 +48,7 @@
 </style>
 </head>
 <body>
-	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
+	<div class="container bg-light rounded border border-success mt-10" style="--bs-bg-opacity: .8;margin-top:100px;">
 		<h3 class="text-center mt-5">Lista de Empleados</h3>
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 			data-bs-target="#modalEmpleado">Nuevo Empleado</button>

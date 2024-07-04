@@ -37,7 +37,7 @@
 	</style>
 </head>
 <body>
-	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
+	<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;margin-top:100px;">
 			<h3 class="text-center mt-3">Historial Venta</h3>
 
 			<table id="tableMedicamentos" class="table table-striped" style="width:100%">
@@ -98,6 +98,9 @@
 			<form id="form-eliminar" method="post" action="ServletHistorialVenta">
 				<input type="hidden" name="codigo" id="codigoEliminar">
 			</form>
+			<form id="form-reporte" action="ServletHistorialVenta?accion=reporte" method="post">
+			<input type="hidden" name="reporte" id="codigoReporte"> 
+		</form>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 		<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
@@ -142,7 +145,28 @@
 			$("#frmEmpleados").bootstrapValidator("resetForm",true);
 		})
 		
-		
+				
+	$(document).on("click", ".btn-reporte", function() {
+    let cod;
+    cod = $(this).parents("tr").find("td")[0].innerHTML;
+    $("#codigoReporte").val(cod);
+
+    Swal.fire({
+        title: "¿Quieres ver el reporte?",
+        text: "",
+        icon: "question", // Ícono de pregunta
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: '<i class="fas fa-check-circle"></i> Si, estoy seguro', // Ícono de confirmación
+        cancelButtonText: '<i class="fas fa-times-circle"></i> No' // Ícono de cancelación
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $("#form-reporte").submit();
+        }
+    });
+});
+
 		function leerJSON(){
 			$.get("ServletEmision",function(response){
 				$.each(response,function(index,item){
@@ -153,6 +177,7 @@
 														   <td>\${item.nom_prod}</td>
 														   <td>\${item.cantidad}</td>
 														   <td>
+														   <button type="button" class="btn btn-warning btn-reporte">Reporte</button>
 															<button type="button" class="btn btn-danger btn-eliminar">Eliminar</button>
 										                	</td>
 														   </tr>`);

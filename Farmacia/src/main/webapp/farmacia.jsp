@@ -21,7 +21,7 @@
                                     <a class="nav-link text-center" href="${row.ruta}">${row.descripcion}</a>
                                 </div>
                                 <div class="col-sm-10">
-                                    <i class="fas fa-user fa-2x"></i>
+                                 
                                 </div>
                             </div>
                         </div>

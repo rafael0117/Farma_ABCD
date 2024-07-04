@@ -94,5 +94,47 @@ public class MySqlEmisionDAO implements EmisionDAO{
 	}
 
 	
-	
+	public DetalleVenta reporte(int cod) {
+	    DetalleVenta obj = null;
+	    Connection cn = null;
+	    PreparedStatement pstm = null;
+	    ResultSet rs = null;
+	    try {
+	        cn = MySqlConexionFa.getConexion();
+	        String sql = "SELECT dv.cod_detalle, v.FechaVentas, v.Monto, e.nom_emp, p.nom_prod, dv.cantidad, c.dni, c.Nombres, c.Direccion " +
+	                     "FROM tb_detalleventas dv " +
+	                     "JOIN ventas v ON dv.IdVentas = v.IdVentas " +
+	                     "JOIN tb_productos p ON p.cod_prod = dv.cod_prod " +
+	                     "JOIN tb_empleado e ON v.cod_emp = e.cod_emp " +
+	                     "JOIN cliente c ON v.IdCliente = c.IdCliente " +
+	                     "WHERE dv.cod_detalle = ?";
+	        pstm = cn.prepareStatement(sql);
+	        pstm.setInt(1, cod);
+	        rs = pstm.executeQuery();
+	        if (rs.next()) {
+	            obj = new DetalleVenta();
+	            obj.setCod_detalle(rs.getInt(1));
+	            obj.setFecha_venta(rs.getString(2));
+	            obj.setMonto(rs.getDouble(3));
+	            obj.setNom_emp(rs.getString(4));
+	            obj.setNom_prod(rs.getString(5));
+	            obj.setCantidad(rs.getInt(6));
+	            obj.setDni_cli(rs.getString(7));
+	            obj.setNom_cli(rs.getString(8));
+	            obj.setDireccion(rs.getString(9));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstm != null) pstm.close();
+	            if (cn != null) cn.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return obj;
+	}
+
 }

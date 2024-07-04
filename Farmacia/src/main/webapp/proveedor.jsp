@@ -37,7 +37,7 @@
 		</style>
 	</head>
 	<body>
-		<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;">
+		<div class="container bg-light rounded border border-success" style="--bs-bg-opacity: .8;margin-top:100px;">
 			<h3 class="text-center mt-3">Lista de Proveedores</h3>
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMedicamentos">
 			  Nuevo Proveedor
